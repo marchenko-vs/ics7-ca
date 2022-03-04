@@ -5,7 +5,6 @@ import interpolation as inpln
 def main():
     try:
         x = float(input('Введите аргумент функции: '))
-        n = int(input('Введите степень полинома: '))
     except ValueError:
         print('Аргумент должен быть вещественным числом.')
         sys.exit(1)
@@ -18,22 +17,23 @@ def main():
 
     inpln.print_table(main_table)
 
-    print('-----------+-----------+-----------+-----------')
-    print('     n     |     x     |   Newton  |  Hermite')
-    print('-----------+-----------+-----------+-----------')
+    print('-----------+-----------+------------+------------')
+    print('  Степень  |     x     |   Ньютон   |    Эрмит')
+    print('-----------+-----------+------------+------------')
 
-    for i in range(1, n + 1):
-        print('{:^11d}|{:^11.6f}|{:^11.6f}|{:^11.6f}'.format(i, x,
+    for i in range(1, 6):
+        print('{:^11d}|{:^11.6f}|{:^12.6f}|{:^12.6f}'.format(i, x,
               inpln.interpolate_newton(main_table['x'], main_table['y'], i, x),
               inpln.interpolate_hermite(main_table['x'].copy(), 
                                         main_table['y'].copy(),
                                         main_table['dy'].copy(), i, x)))
-        print('-----------+-----------+-----------+-----------')
+        print('-----------+-----------+------------+------------')
 
     print('Корень функции: {:.6f}.'.format(inpln.interpolate_newton(
           main_table['y'],
-          main_table['x'], n, 0.0)))
+          main_table['x'], 5, 0.0)))
 
 
 if __name__ == '__main__':
     main()
+
