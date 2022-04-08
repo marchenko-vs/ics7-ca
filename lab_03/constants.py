@@ -1,0 +1,4 @@
+EPS = 1e-3
+
+EXIT_SUCCESS = 0
+EXIT_FAILURE = 1
