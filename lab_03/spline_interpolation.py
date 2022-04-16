@@ -28,8 +28,8 @@ def calc_c(x_arr: list, y_arr: list,
                   (y_arr[i - 1] - y_arr[i - 2]) / h2)
 
         ksi_cur = - h1 / (h2 * ksi_arr[i - 1] + 2 * (h2 + h1))
-        teta_cur = (fi - h1 * teta_arr[i - 1]) \
-                   / (h1 * ksi_arr[i - 1] + 2 * (h2 + h1))
+        teta_cur = (fi - h1 * teta_arr[i - 1]) / (h1 * ksi_arr[i - 1] +
+                                                  2 * (h2 + h1))
 
         ksi_arr.append(ksi_cur)
         teta_arr.append(teta_cur)
@@ -42,39 +42,39 @@ def calc_c(x_arr: list, y_arr: list,
     return c
 
 
-def calc_B_and_D(x_arr: list, y_arr: list, C: list,
+def calc_b_and_d(x_arr: list, y_arr: list, c: list,
                  table: list, flag: int) -> tuple:
-    B = []
-    D = []
+    b = []
+    d = []
 
     for i in range(1, len(x_arr) - 1):
         h = x_arr[i] - x_arr[i - 1]
 
-        B.append((y_arr[i] - y_arr[i - 1]) / 
-                 h - (h * (C[i] + 2 * C[i - 1])) / 3)
-        D.append((C[i] - C[i - 1]) / (3 * h))
+        b.append((y_arr[i] - y_arr[i - 1]) /
+                 h - (h * (c[i] + 2 * c[i - 1])) / 3)
+        d.append((c[i] - c[i - 1]) / (3 * h))
 
     h = x_arr[-1] - x_arr[-2]
 
-    B.append((y_arr[-1] - y_arr[-2]) / h - (h * 2 * C[-1]) / 3)
+    b.append((y_arr[-1] - y_arr[-2]) / h - (h * 2 * c[-1]) / 3)
 
     if flag == 3:
         np, np_derivative = new_int.newton_polynomial(copy.deepcopy(table),
-                                                     3, y_arr[-1])
-        D.append(np_derivative - C[-1] / (3 * h))
+                                                      3, y_arr[-1])
+        d.append(np_derivative - c[-1] / (3 * h))
     else:
-        D.append(- C[-1] / (3 * h))
+        d.append(- c[-1] / (3 * h))
 
-    return B, D
+    return b, d
 
 
-def calculate_koefs_spline(x_arr: list, y_arr: list, 
-                           table: list, flag: int) -> tuple:
-    A = calc_a(y_arr)
-    C = calc_c(x_arr, y_arr, table, flag)
-    B, D = calc_B_and_D(x_arr, y_arr, C, table, flag)
+def calc_coefficients(x_arr: list, y_arr: list,
+                      table: list, flag: int) -> tuple:
+    a = calc_a(y_arr)
+    c = calc_c(x_arr, y_arr, table, flag)
+    b, d = calc_b_and_d(x_arr, y_arr, c, table, flag)
 
-    return A, B, C, D
+    return a, b, c, d
 
 
 def find_index(x_arr: list, x: float) -> int:
@@ -87,7 +87,7 @@ def find_index(x_arr: list, x: float) -> int:
     return index - 1
 
 
-def count_polynom(x: float, x_arr: list, index: int, 
+def count_polynom(x: float, x_arr: list, index: int,
                   coefficients: tuple) -> float:
     h = x - x_arr[index]
     y = 0
@@ -102,7 +102,7 @@ def spline(table: list, x: float, flag: int) -> float:
     x_arr = [i[0] for i in table]
     y_arr = [i[1] for i in table]
 
-    coefficients = calculate_koefs_spline(x_arr, y_arr, table, flag)
+    coefficients = calc_coefficients(x_arr, y_arr, table, flag)
 
     index = find_index(x_arr, x)
 

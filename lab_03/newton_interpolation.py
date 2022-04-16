@@ -2,6 +2,11 @@ from constants import *
 from sympy import symbols, diff
 
 
+def divided_difference(x_0: float, y_0: float, x_1: float, y_1: float) -> float:
+    if abs(x_0 - x_1) > EPS:
+        return (y_0 - y_1) / (x_0 - x_1)
+
+
 def search_index(table: list, x: float, n: int) -> int:
     index = 0
 
@@ -32,22 +37,18 @@ def search_index(table: list, x: float, n: int) -> int:
     return l_border
 
 
-def divided_difference(x0: float, y0: float, x1: float, y1: float) -> float:
-    if abs(x0 - x1) > EPS:
-        return (y0 - y1) / (x0 - x1)
-
-
-def newton_polynomial(table: list, n: int, xf: float) -> tuple:
-    index = search_index(table, xf, n)
+def newton_polynomial(table: list, degree: int, argument: float) -> tuple:
+    index = search_index(table, argument, degree)
     np = str(table[index][1])
 
-    for i in range(n):
-        for j in range(n - i):
+    for i in range(degree):
+        for j in range(degree - i):
             table[index + j][1] = divided_difference(
                 table[index + j][0], table[index + j][1],
                 table[index + j + i + 1][0], table[index + j + 1][1])
 
         mult = "(" + str(table[index][1]) + ")"
+
         for j in range(i + 1):
             mult += " * (x - " + str(table[index + j][0]) + ")"
 
@@ -55,4 +56,5 @@ def newton_polynomial(table: list, n: int, xf: float) -> tuple:
 
     x = symbols('x', real=True)
 
-    return eval(np, {}, {"x": xf}), diff(diff(eval(np))).subs({x: xf})
+    return eval(np, {},
+                {"x": argument}), diff(diff(eval(np))).subs({x: argument})

@@ -7,15 +7,16 @@ def scan_argument() -> tuple:
                         'интерполяция: '))
 
         return EXIT_SUCCESS, x
-    except:
+    except ValueError:
         print("Ошибка: введены данные некорректного типа!")
 
         return EXIT_FAILURE, 0
 
 
-def scan_option() -> tuple:
+def scan_condition() -> tuple:
     try:
-        print('\nВыберите вариант задания краевых условий на границах таблицы.\n'
+        print('\nВыберите вариант задания краевых условий на '
+              'границах таблицы.\n'
               '1. Естественные краевые условия, когда вторые\nпроизводные '
               'сплайна равны нулю.\n2. На одной границе при X = X_0 вторая '
               'производная сплайна\nравна второй производной полинома Ньютона '
@@ -23,17 +24,18 @@ def scan_option() -> tuple:
               'нулю.\n3. На обеих границах при X = X_0 и X = X_N вторая\n'
               'производная сплайна равна второй\nпроизводной полинома Ньютона '
               'третьей степени.')
-        flag = int(input('Введите число от 1 до 3: '))
 
-        if flag < 1 or flag > 3:
+        condition = int(input('Введите число от 1 до 3: '))
+
+        if condition < 1 or condition > 3:
             print("Ошибка: нужно ввести число от 1 до 3.")
 
             return EXIT_FAILURE, 0
 
-        return EXIT_SUCCESS, flag
-    except:
+        return EXIT_SUCCESS, condition
+    except ValueError:
         print("Ошибка: введены данные некорректного типа!")
-        
+
         return EXIT_FAILURE, 0
 
 

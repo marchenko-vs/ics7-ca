@@ -1,8 +1,8 @@
 import copy
-import spline_interpolation as spl_int
-import sys
 import interface as ui
 import newton_interpolation as new_int
+import spline_interpolation as spl_int
+import sys
 
 from constants import *
 
@@ -25,15 +25,15 @@ def main():
     rc, x = ui.scan_argument()
 
     if rc == EXIT_SUCCESS:
-        rc, flag = ui.scan_option()
+        rc, condition = ui.scan_condition()
 
         if rc == EXIT_SUCCESS:
             np, np_derivative = new_int.newton_polynomial(copy.deepcopy(table),
                                                           3, x)
-            spl = spl_int.spline(table, x, flag)
+            spline = spl_int.spline(table, x, condition)
 
-            print('\nИнтерполяция сплайнами = {:.3f}'.format(spl))
-            print('Интреполяция полиномом Ньютона = {:.3f}'.format(np))
+            print('\nИнтерполяция сплайнами = {:.3f}'.format(spline))
+            print('Интерполяция полиномом Ньютона = {:.3f}'.format(np))
 
     return rc
 
