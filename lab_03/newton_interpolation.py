@@ -2,11 +2,11 @@ from constants import *
 from sympy import symbols, diff
 
 
-def search_index(table, x, n):
+def search_index(table: list, x: float, n: int) -> int:
     index = 0
 
     for i in table:
-        if (i[0] > x):
+        if i[0] > x:
             break
         index += 1
 
@@ -16,14 +16,14 @@ def search_index(table, x, n):
     l_border = index
     r_border = index
 
-    while (n > 0):
-        if (r_border - index == index - l_border):
-            if (l_border > 0):
+    while n > 0:
+        if r_border - index == index - l_border:
+            if l_border > 0:
                 l_border -= 1
             else:
                 r_border += 1
         else:
-            if (r_border < len(table) - 1):
+            if r_border < len(table) - 1:
                 r_border += 1
             else:
                 l_border -= 1
@@ -32,19 +32,19 @@ def search_index(table, x, n):
     return l_border
 
 
-def divided_difference(x0, y0, x1, y1):
-    if (abs(x0 - x1) > EPS):
+def divided_difference(x0: float, y0: float, x1: float, y1: float) -> float:
+    if abs(x0 - x1) > EPS:
         return (y0 - y1) / (x0 - x1)
 
 
-def newton_polynomial(table, n, xf):
+def newton_polynomial(table: list, n: int, xf: float) -> tuple:
     index = search_index(table, xf, n)
     np = str(table[index][1])
 
     for i in range(n):
         for j in range(n - i):
             table[index + j][1] = divided_difference(
-                table[index + j][0],         table[index + j][1],
+                table[index + j][0], table[index + j][1],
                 table[index + j + i + 1][0], table[index + j + 1][1])
 
         mult = "(" + str(table[index][1]) + ")"
@@ -54,5 +54,5 @@ def newton_polynomial(table, n, xf):
         np += " + " + mult
 
     x = symbols('x', real=True)
-        
-    return eval(np, {}, {"x":xf}), diff(diff(eval(np))).subs({x: xf})
+
+    return eval(np, {}, {"x": xf}), diff(diff(eval(np))).subs({x: xf})

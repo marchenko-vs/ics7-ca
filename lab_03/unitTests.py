@@ -1,5 +1,5 @@
 from constants import *
-from spline import spline
+from spline_interpolation import spline
 
 
 def main():
@@ -28,13 +28,17 @@ def main():
                   [1.0, 2, 0.496000],
                   [1.0, 3, 0.496000]]
 
+    print('Unit testing started...')
+
     for i in range(len(test_table)):
         spl = spline(table, test_table[i][0], test_table[i][1])
 
         if abs(spl - test_table[i][2]) < EPS:
-            print("Test #{}: success.".format(i + 1))
+            print("Test #{}: \033[32msuccess.\033[30m".format(i + 1))
         else:
-            print("Test #{}: fail.".format(i + 1))
+            print("Test #{}: \033[31mfailure.\033[30m".format(i + 1))
+
+    print('Unit testing ended.')
 
 
 if __name__ == "__main__":
