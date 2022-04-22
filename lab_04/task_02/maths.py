@@ -9,7 +9,7 @@ class Point:
         return f"|{self.x:^10.2f} | {self.y:^10.2f} | {self.z:^10.2f} | {self.weight:^10.2f} |"
 
 
-def find_slae_matrix_3d(dots: list, n: int) -> list:
+def find_linear_system_matrix(dots: list, n: int) -> list:
     global coefficient
 
     rn = 0
@@ -36,7 +36,7 @@ def find_slae_matrix_3d(dots: list, n: int) -> list:
     return res
 
 
-def method_gauss(matrix: list) -> list:
+def gaussian_elimination(matrix: list) -> list:
     n = len(matrix)
 
     for k in range(n):

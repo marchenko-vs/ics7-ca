@@ -12,14 +12,11 @@ class Point:
         return f"|{self.x:^10.2f} | {self.y:^10.2f} | {self.weight:^10.2f} |"
 
 
-def append_right_side(matrix: list, dots: list):
-    for i in range(len(matrix)):
-        res = 0
+def add_dots(table: list):
+    table_x = [table[i].x for i in range(len(table))]
+    table_y = [table[i].y for i in range(len(table))]
 
-        for j in range(len(dots)):
-            res += dots[j].weight * dots[j].y * (dots[j].x ** i)
-
-        matrix[i].append(res)
+    plt.plot(table_x, table_y, 'ro', color='darkblue', label='Табличная функция')
 
 
 def get_coefficient(dots: list, degree: int) -> float:
@@ -31,7 +28,17 @@ def get_coefficient(dots: list, degree: int) -> float:
     return coefficient
 
 
-def find_slae_matrix(dots: list, degree: int) -> list:
+def append_right_side(matrix: list, dots: list):
+    for i in range(len(matrix)):
+        res = 0
+
+        for j in range(len(dots)):
+            res += dots[j].weight * dots[j].y * (dots[j].x ** i)
+
+        matrix[i].append(res)
+
+
+def find_linear_system_matrix(dots: list, degree: int) -> list:
     matrix = [[get_coefficient(dots, j + i) for i in range(degree + 1)] for j in range(degree + 1)]
     append_right_side(matrix, dots)
 
@@ -44,21 +51,21 @@ def get_polynomial_coefficients(matrix: list) -> list:
             if i == j:
                 continue
 
-            multiplication = matrix[j][i] / matrix[i][i]
+            multiplier = matrix[j][i] / matrix[i][i]
 
             for k in range(0, len(matrix) + 1):
-                matrix[j][k] -= multiplication * matrix[i][k]
+                matrix[j][k] -= multiplier * matrix[i][k]
 
     for i in range(len(matrix)):
-        multiplication = matrix[i][i]
+        multiplier = matrix[i][i]
 
         for j in range(len(matrix[i])):
-            matrix[i][j] /= multiplication
+            matrix[i][j] /= multiplier
 
     return [matrix[i][-1] for i in range(len(matrix))]
 
 
-def add_plot(coefficients: list, label: str, start: float, end: float):
+def add_approximation_function(coefficients: list, start: float, end: float, degree: int):
     my_x = list()
     my_y = list()
     step = (end - start) / 1000
@@ -72,22 +79,15 @@ def add_plot(coefficients: list, label: str, start: float, end: float):
 
         my_y.append(y)
 
-    plt.plot(my_x, my_y, 'g', label=label)
-
-
-def add_table(table: list, label: str):
-    table_x = [table[i].x for i in range(len(table))]
-    table_y = [table[i].y for i in range(len(table))]
-
-    plt.plot(table_x, table_y, 'ro', label=label)
+    plt.plot(my_x, my_y, 'g', label=f'Кривая (n = {degree})', color='green')
 
 
 def draw_result():
-    plt.title('График функции', fontsize=17)
+    plt.title('Графики функций', fontsize=15)
     plt.legend()
 
-    plt.xlabel('X', fontsize=15)
-    plt.ylabel('Y', fontsize=15)
+    plt.xlabel('X', fontsize=13)
+    plt.ylabel('Y', fontsize=13)
 
     plt.grid()
     plt.show()

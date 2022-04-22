@@ -2,14 +2,13 @@ from maths import Point
 
 
 def print_table(table: list):
-    print("|-----------+------------+------------+------------|")
+    print("+-----------+------------+------------+------------+")
     print("|     X     |      Y     |     Z      |     Вес    |")
-    print("|-----------+------------+------------+------------|")
+    print("+-----------+------------+------------+------------+")
 
     for i in range(len(table)):
         print(table[i])
-
-    print("|-----------+------------+------------+------------|")
+        print("+-----------+------------+------------+------------+")
 
 
 def read_from_file(filename: str) -> list:
@@ -24,8 +23,3 @@ def read_from_file(filename: str) -> list:
             line = f.readline()
 
     return dots
-
-def add_table(table: list):
-    table_x = [table[i].x for i in range(len(table))]
-    table_y = [table[i].y for i in range(len(table))]
-    table_z = [table[i].z for i in range(len(table))]
