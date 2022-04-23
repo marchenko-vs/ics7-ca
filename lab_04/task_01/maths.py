@@ -16,7 +16,7 @@ def add_dots(table: list):
     table_x = [table[i].x for i in range(len(table))]
     table_y = [table[i].y for i in range(len(table))]
 
-    plt.plot(table_x, table_y, 'ro', color='darkblue', label='Табличная функция')
+    plt.plot(table_x, table_y, 'ro', label='Табличная функция')
 
 
 def get_coefficient(dots: list, degree: int) -> float:
@@ -79,7 +79,7 @@ def add_approximation_function(coefficients: list, start: float, end: float, deg
 
         my_y.append(y)
 
-    plt.plot(my_x, my_y, 'g', label=f'Кривая (n = {degree})', color='green')
+    plt.plot(my_x, my_y, 'g', label=f'Кривая (n = {degree})')
 
 
 def draw_result():
