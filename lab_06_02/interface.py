@@ -13,6 +13,12 @@ def get_data(filename: str, table: list, separator: str=' '):
             buffer = f.readline()
 
 
+def process_table(table: list):
+    for i in range(len(table[0])):
+        table[0][i] = str(table[0][i])
+        table[1][i] = str(table[1][i])
+
+
 def print_result(table: list):
     print('Таблица')
 

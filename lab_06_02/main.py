@@ -84,10 +84,7 @@ def main():
     leveling_based_formula(TABLE[0], TABLE[1])
     second_derivative_formula(TABLE[1])
 
-    for i in range(len(TABLE[0])):
-        TABLE[0][i] = str(TABLE[0][i])
-        TABLE[1][i] = str(TABLE[1][i])
-
+    interface.process_table(TABLE)
     interface.print_result(TABLE)
 
 
