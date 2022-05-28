@@ -2,13 +2,14 @@ import maths
 
 
 def main():
-    ny = 55
-    nx = 10
-    y_arr, fy_arr = maths.solution(ny, nx)
+    n_x = 12
+    n_y = 53
 
-    fy = lambda x: maths.f(x, y_arr, fy_arr)
-    res = maths.simpson(fy, -1, 1, ny)
-    print(res)
+    y_array, f_y_array = maths.find_solution(n_x, n_y)
+    f_y = lambda x: maths.lambda_function(x, y_array, f_y_array)
+    integral = maths.simpson_method(f_y, -1, 1, n_y)
+
+    print('Значение двукратного интеграла = {:.6f}.'.format(integral))
 
 
 if __name__ == '__main__':

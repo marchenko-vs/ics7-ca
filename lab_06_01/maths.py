@@ -2,6 +2,8 @@ from numpy.polynomial.legendre import leggauss
 from numpy import linspace
 from math import sqrt
 
+EPS = 1e-6
+
 
 def t_x(t, a, b):
     return (b + a) / 2 + (b - a) * t / 2
@@ -19,7 +21,7 @@ def g_function(y):
     return 1 - sqrt(1 - y * y), 1 + sqrt(1 - y * y)
 
 
-def simpson(f, a, b, num):
+def simpson_method(f, a, b, num):
     if num < 3 or num & 1 == 0:
         raise ValueError
 
@@ -34,7 +36,7 @@ def simpson(f, a, b, num):
     return res * (h / 3)
 
 
-def gauss(f, a, b, num):
+def gauss_method(f, a, b, num) -> float:
     args, coefficients = leggauss(num)
     res = 0
 
@@ -44,22 +46,22 @@ def gauss(f, a, b, num):
     return res
 
 
-def solution(hy, hx):
-    y_arr = list(linspace(-1, 1, hy))
+def find_solution(hx: float, hy: float) -> tuple:
+    y_arr = list(linspace(-1, 1, int(hy)))
     x_arr = []
 
     for y in y_arr:
         xa, xb = g_function(y)
         fx = integral(function, y)
-        x_arr.append(gauss(fx, xa, xb, hx))
+        x_arr.append(gauss_method(fx, xa, xb, hx))
 
     return y_arr, x_arr
 
 
-def f(x, x_arr, y_arr_):
+def lambda_function(x: float, x_array: list, y_array: list) -> float:
     i = 0
 
-    while i < len(x_arr) and abs(x_arr[i] - x) > 1e-6:
+    while i < len(x_array) and abs(x_array[i] - x) > EPS:
         i += 1
 
-    return y_arr_[i]
+    return y_array[i]
